@@ -19,7 +19,6 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
 
   const score = calculateAIScore(body.message ?? "");
-
   const status = calculateLeadStatus(score);
 
   const lead = await prisma.lead.create({
@@ -30,7 +29,7 @@ export async function POST(req: NextRequest) {
       source: body.source ?? "WhatsApp",
 
       aiScore: score,
-      status: status,
+      status,
 
       assignedTo: body.assignedTo,
       notes: body.notes,

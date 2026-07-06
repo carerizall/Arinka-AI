@@ -13,23 +13,22 @@ datasource db {
 }
 
 model Lead {
-  id         String   @id @default(cuid())
+  id          String   @id @default(cuid())
 
-  name       String
-  phone      String   @unique
+  name        String
+  phone       String   @unique
 
-  message    String?
+  message     String?
+  summary     String?
 
-  source     String   @default("WhatsApp")
+  source      String   @default("WhatsApp")
 
-  status     String   @default("Cold")
+  status      String   @default("Cold")
+  aiScore     Int      @default(0)
 
-  aiScore    Int      @default(0)
+  assignedTo  String?
+  notes       String?
 
-  assignedTo String?
-
-  notes      String?
-
-  createdAt  DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
 }
