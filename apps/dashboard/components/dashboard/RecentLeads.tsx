@@ -7,28 +7,21 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const leads = [
-  {
-    name: "Budi Santoso",
-    phone: "08123456789",
-    status: "🔥 Hot",
-    score: 95,
-  },
-  {
-    name: "Sinta Dewi",
-    phone: "08234567890",
-    status: "🟡 Warm",
-    score: 77,
-  },
-  {
-    name: "Andi Saputra",
-    phone: "08345678901",
-    status: "⚪ Cold",
-    score: 42,
-  },
-];
+interface Lead {
+  id: string;
+  name: string;
+  phone: string;
+  status: string;
+  aiScore: number;
+}
 
-export default function RecentLeads() {
+interface RecentLeadsProps {
+  leads: Lead[];
+}
+
+export default function RecentLeads({
+  leads,
+}: RecentLeadsProps) {
   return (
     <div className="mt-8 rounded-xl bg-zinc-900 p-6">
       <h2 className="mb-6 text-xl font-semibold">
@@ -36,40 +29,26 @@ export default function RecentLeads() {
       </h2>
 
       <Table>
-
         <TableHeader>
-
           <TableRow>
             <TableHead>Nama</TableHead>
             <TableHead>WhatsApp</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>AI Score</TableHead>
           </TableRow>
-
         </TableHeader>
 
         <TableBody>
-
           {leads.map((lead) => (
-
-            <TableRow key={lead.phone}>
-
+            <TableRow key={lead.id}>
               <TableCell>{lead.name}</TableCell>
-
               <TableCell>{lead.phone}</TableCell>
-
               <TableCell>{lead.status}</TableCell>
-
-              <TableCell>{lead.score}</TableCell>
-
+              <TableCell>{lead.aiScore}</TableCell>
             </TableRow>
-
           ))}
-
         </TableBody>
- 
       </Table>
-
     </div>
   );
 }
