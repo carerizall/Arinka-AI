@@ -1,5 +1,7 @@
 import AppLayout from "@/components/layout/AppLayout";
 import StatsCard from "@/components/dashboard/StatsCard";
+import LeadChart from "@/components/dashboard/LeadChart";
+import RecentLeads from "@/components/dashboard/RecentLeads";
 
 export default function Home() {
   return (
@@ -16,6 +18,14 @@ export default function Home() {
         <StatsCard title="Chat Hari Ini" value="52" />
         <StatsCard title="AI Summary" value="39" />
       </div>
+
+      <div className="mt-8">
+        <LeadChart />
+      </div>
+
+      <RecentLeads />
+
     </AppLayout>
   );
 }
+
