@@ -56,20 +56,39 @@ export async function POST(req: NextRequest) {
     console.error("AI Summary gagal:", error);
   }
 
-  await prisma.lead.create({
-    data: {
-      name: body.data?.pushName ?? phone,
-      phone,
-      message,
-      summary,
+ const lead = await prisma.lead.upsert({
+  where: {
+    phone,
+  },
 
-      source: "WhatsApp",
+  update: {
+    name: body.data?.pushName ?? phone,
+    message,
+    summary,
+    aiScore: score,
+    status,
+  },
 
-      aiScore: score,
-      status,
-    },
-  });
+  create: {
+    name: body.data?.pushName ?? phone,
+    phone,
+    message,
+    summary,
 
+    source: "WhatsApp",
+
+    aiScore: score,
+    status,
+  },
+});
+
+await prisma.chatMessage.create({
+  data: {
+    leadId: lead.id,
+    sender: phone,
+    message,
+  },
+});
   console.log("Lead berhasil disimpan!");
 
   return NextResponse.json({

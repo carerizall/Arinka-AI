@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import {
   Table,
   TableBody,
@@ -41,7 +43,14 @@ export default function RecentLeads({
         <TableBody>
           {leads.map((lead) => (
             <TableRow key={lead.id}>
-              <TableCell>{lead.name}</TableCell>
+              <TableCell>
+        <Link
+            href={`/leads/${lead.id}`}
+            className="font-medium text-blue-400 hover:text-blue-300 hover:underline"
+  >
+          {lead.name}
+        </Link>
+        </TableCell>
               <TableCell>{lead.phone}</TableCell>
               <TableCell>{lead.status}</TableCell>
               <TableCell>{lead.aiScore}</TableCell>
