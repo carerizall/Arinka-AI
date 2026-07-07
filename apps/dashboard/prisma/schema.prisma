@@ -13,36 +13,94 @@ datasource db {
 }
 
 model Lead {
-  id          String   @id @default(cuid())
+  id String @id @default(cuid())
 
-  name        String
-  phone       String   @unique
+  name  String
+  phone String @unique
 
-  message     String?
-  summary     String?
+  message String?
+  summary String?
 
-  source      String   @default("WhatsApp")
+  source String @default("WhatsApp")
 
-  status      String   @default("Cold")
-  aiScore     Int      @default(0)
+  status  String @default("Cold")
+  aiScore Int    @default(0)
 
-  assignedTo  String?
-  notes       String?
+  assignedTo String?
+  notes      String?
 
   messages ChatMessage[]
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now()) @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model ChatMessage {
-  id        String   @id @default(cuid())
+  id String @id @default(cuid())
 
-  leadId    String
-  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  leadId String
+  lead   Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
 
-  sender    String
-  message   String
+  sender  String
+  message String
 
   createdAt DateTime @default(now())
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+
+  accounts Account[]
+  sessions Session[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+
+  refresh_token String?
+  access_token  String?
+  expires_at    Int?
+  token_type    String?
+  scope         String?
+  id_token      String?
+  session_state String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([sessionToken])
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
 }
